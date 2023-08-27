@@ -1,4 +1,13 @@
-# React + Vite
+# Expense tracker
+
+Steps for running the application:
+
+    $ pnpm install
+    $ pnpm run dev
+
+Go to http://localhost:5173/ 
+
+## React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
