@@ -1,26 +1,32 @@
-import { Card } from '@tremor/react'
-import './App.css'
-
-type Sample = {
-  sampleProp_1: string,
-  sampleProp_2: number,
-}
+import { Button } from '@tremor/react';
+import { useAppDispatch } from './store/store-hooks';
+import { addExpense } from './store/slices/expensesSlice';
+import './App.css';
+import { Expense } from './models/expense';
+import { ExpensesList } from './components/ExpensesList';
 
 function App() {
-  const sample: Sample = {
-    sampleProp_1: 'sample',
-    sampleProp_2: 10
+  const dispatch = useAppDispatch();
+
+  const clickAddExpense = () => {
+    const newExpense: Expense = {
+      id: 0,
+      title: 'Cafe',
+      amount: 10.0,
+      category: 'Groceries',
+    };
+
+    dispatch(addExpense(newExpense));
   };
 
   return (
     <>
-      <Card>
-        <h1>Hello there code is clean!</h1>
-        <p>{sample.sampleProp_1}</p>
-        <p>{sample.sampleProp_2}</p>
-      </Card>
+      <Button size="xs" onClick={clickAddExpense}>
+        Add Expense
+      </Button>
+      <ExpensesList />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
