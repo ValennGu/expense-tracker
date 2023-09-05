@@ -1,6 +1,7 @@
 import {
   Button,
   Card,
+  DatePicker,
   NumberInput,
   Select,
   SelectItem,
@@ -18,6 +19,7 @@ const defaultExpense: Expense = {
   amount: 0,
   title: '',
   category: 'Home',
+  date: new Date(),
 };
 
 export const NewExpenseForm = () => {
@@ -41,11 +43,13 @@ export const NewExpenseForm = () => {
     <Card className="max-w-xs">
       <Title>New Expense</Title>
       <TextInput
-        className="mt-4"
+        value={expense.title}
+        className="mt-3"
         placeholder="Expense name ..."
         onChange={(event) => changeHandler({ title: event.target.value })}
       />
       <NumberInput
+        value={expense.amount}
         className="mt-1"
         icon={CurrencyDollarIcon}
         placeholder="Amount..."
@@ -55,14 +59,19 @@ export const NewExpenseForm = () => {
         }
       />
       <Select
+        value={expense.category}
         className="mt-1"
-        defaultValue="Home"
-        // TODO: category should be dynamic.
-        onChange={(event) => changeHandler({ category: 'Home' })}
+        defaultValue={expense.category}
+        onValueChange={(event) => changeHandler({ category: event })}
       >
         <SelectItem value="Home">Home</SelectItem>
         <SelectItem value="Groceries">Groceries</SelectItem>
       </Select>
+      <DatePicker
+        value={expense.date}
+        className="mt-1"
+        onValueChange={(event) => changeHandler({ date: event })}
+      />
       <Button
         className="mt-3"
         style={{ width: '100%' }}
