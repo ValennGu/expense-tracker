@@ -33,7 +33,6 @@ export const NewExpenseForm = () => {
     }));
   };
 
-  // TODO: adding an expense should set the form to it's initial value.
   const onClickAddExpense = () => {
     dispatch(addExpense(expense));
     setExpense(defaultExpense);
