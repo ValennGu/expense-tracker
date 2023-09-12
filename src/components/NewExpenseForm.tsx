@@ -1,3 +1,4 @@
+import { format } from 'date-fns';
 import {
   Button,
   Card,
@@ -10,32 +11,19 @@ import {
 } from '@tremor/react';
 import { CurrencyDollarIcon } from '@heroicons/react/solid';
 import { useAppDispatch } from '../store/store-hooks';
-import { Expense } from '../models/expense';
 import { addExpense } from '../store/slices/expensesSlice';
-import { useState } from 'react';
-
-const defaultExpense: Expense = {
-  id: 0,
-  amount: 0,
-  title: '',
-  category: 'Home',
-  date: new Date(),
-};
+import { useNewExpense } from '../hooks/useNewExpense';
+import { useSaveToFirestore } from '../hooks/useSaveToFirestore';
 
 export const NewExpenseForm = () => {
-  const [expense, setExpense] = useState<Expense>(defaultExpense);
+  const { expense, changeHandler, resetValues } = useNewExpense();
+  const { saveExpense } = useSaveToFirestore();
   const dispatch = useAppDispatch();
-
-  const changeHandler = (partialExpense: Partial<Expense>) => {
-    setExpense((prev) => ({
-      ...prev,
-      ...partialExpense,
-    }));
-  };
 
   const onClickAddExpense = () => {
     dispatch(addExpense(expense));
-    setExpense(defaultExpense);
+    saveExpense(expense);
+    resetValues();
   };
 
   return (
@@ -63,13 +51,22 @@ export const NewExpenseForm = () => {
         defaultValue={expense.category}
         onValueChange={(event) => changeHandler({ category: event })}
       >
+        <SelectItem value="Mortgage">Mortgage</SelectItem>
         <SelectItem value="Home">Home</SelectItem>
         <SelectItem value="Groceries">Groceries</SelectItem>
+        <SelectItem value="Gym">Gym</SelectItem>
+        <SelectItem value="Gas">Gas</SelectItem>
+        <SelectItem value="Services">Services</SelectItem>
+        <SelectItem value="Extra">Extra</SelectItem>
       </Select>
       <DatePicker
-        value={expense.date}
+        value={new Date()}
         className="mt-1"
-        onValueChange={(event) => changeHandler({ date: event })}
+        onValueChange={(event) =>
+          changeHandler({
+            date: format(new Date(event!.toString()), 'MM/dd/yyyy'),
+          })
+        }
       />
       <Button
         className="mt-3"

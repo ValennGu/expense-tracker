@@ -1,8 +1,12 @@
 import { Badge, Card, List, ListItem, Title } from '@tremor/react';
 import { useAppSelector } from '../store/store-hooks';
+import { useDocument } from '../hooks/useDocument';
 
 export const ExpensesList = () => {
   const expenses = useAppSelector((state) => state.expenenses.expenses);
+  const { data } = useDocument('september');
+
+  console.log(data);
 
   return (
     <Card className="max-w-xs">
