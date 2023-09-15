@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { Expense } from '../models/expense';
 import { format } from 'date-fns';
+import uuid from 'react-uuid';
 
 const defaultExpense: Expense = {
-  id: 0,
+  id: '',
   amount: 0,
   title: '',
   category: 'Home',
@@ -12,12 +13,13 @@ const defaultExpense: Expense = {
 
 export const useNewExpense = () => {
   const [expense, setExpense] = useState<Expense>(defaultExpense);
-  const resetValues = () => setExpense(defaultExpense);
 
+  const resetValues = () => setExpense(defaultExpense);
   const changeHandler = (partialExpense: Partial<Expense>) => {
     setExpense((prev) => ({
       ...prev,
       ...partialExpense,
+      id: uuid(),
     }));
   };
 

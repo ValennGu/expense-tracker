@@ -3,7 +3,7 @@ import expensesReducer from './slices/expensesSlice';
 
 export const store = configureStore({
   reducer: {
-    expenenses: expensesReducer,
+    expenses: expensesReducer,
   },
 });
 

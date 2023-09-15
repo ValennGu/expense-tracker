@@ -1,4 +1,5 @@
 import { format } from 'date-fns';
+
 import {
   Button,
   Card,
@@ -13,16 +14,17 @@ import { CurrencyDollarIcon } from '@heroicons/react/solid';
 import { useAppDispatch } from '../store/store-hooks';
 import { addExpense } from '../store/slices/expensesSlice';
 import { useNewExpense } from '../hooks/useNewExpense';
-import { useSaveToFirestore } from '../hooks/useSaveToFirestore';
+import { useMonthlyExpenses } from '../hooks/useMonthlyExpenses';
 
 export const NewExpenseForm = () => {
   const { expense, changeHandler, resetValues } = useNewExpense();
-  const { saveExpense } = useSaveToFirestore();
+  const { addExpenseToDB } = useMonthlyExpenses();
+
   const dispatch = useAppDispatch();
 
   const onClickAddExpense = () => {
     dispatch(addExpense(expense));
-    saveExpense(expense);
+    addExpenseToDB(expense);
     resetValues();
   };
 
