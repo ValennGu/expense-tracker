@@ -11,25 +11,22 @@ import {
   Title,
 } from '@tremor/react';
 import { CurrencyDollarIcon } from '@heroicons/react/solid';
-import { useAppDispatch } from '../store/store-hooks';
-import { addExpense } from '../store/slices/expensesSlice';
 import { useNewExpense } from '../hooks/useNewExpense';
-import { useMonthlyExpenses } from '../hooks/useMonthlyExpenses';
+import { Expense, ExpenseCategory } from '../models/expense';
 
-export const NewExpenseForm = () => {
+interface Props {
+  onNewExpense: (expense: Expense) => void;
+}
+
+export const NewExpenseForm = (props: Props) => {
   const { expense, changeHandler, resetValues } = useNewExpense();
-  const { addExpenseToDB } = useMonthlyExpenses();
-
-  const dispatch = useAppDispatch();
 
   const onClickAddExpense = () => {
-    dispatch(addExpense(expense));
-    addExpenseToDB(expense);
+    props.onNewExpense(expense);
     resetValues();
   };
-
   return (
-    <Card className="max-w-xs">
+    <Card>
       <Title>New Expense</Title>
       <TextInput
         value={expense.title}
@@ -43,9 +40,7 @@ export const NewExpenseForm = () => {
         icon={CurrencyDollarIcon}
         placeholder="Amount..."
         min={0}
-        onChange={(event) =>
-          changeHandler({ amount: Number(event.target.value) })
-        }
+        onChange={(event) => changeHandler({ amount: Number(event.target.value) })}
       />
       <Select
         value={expense.category}
@@ -53,16 +48,14 @@ export const NewExpenseForm = () => {
         defaultValue={expense.category}
         onValueChange={(event) => changeHandler({ category: event })}
       >
-        <SelectItem value="Mortgage">Mortgage</SelectItem>
-        <SelectItem value="Home">Home</SelectItem>
-        <SelectItem value="Groceries">Groceries</SelectItem>
-        <SelectItem value="Gym">Gym</SelectItem>
-        <SelectItem value="Gas">Gas</SelectItem>
-        <SelectItem value="Services">Services</SelectItem>
-        <SelectItem value="Extra">Extra</SelectItem>
+        {Object.values(ExpenseCategory).map((category) => (
+          <SelectItem key={category} value={category}>
+            {category}
+          </SelectItem>
+        ))}
       </Select>
       <DatePicker
-        value={new Date()}
+        value={new Date(expense.date)}
         className="mt-1"
         onValueChange={(event) =>
           changeHandler({
@@ -70,11 +63,7 @@ export const NewExpenseForm = () => {
           })
         }
       />
-      <Button
-        className="mt-3"
-        style={{ width: '100%' }}
-        onClick={onClickAddExpense}
-      >
+      <Button className="mt-3" style={{ width: '100%' }} onClick={onClickAddExpense}>
         Add Expense
       </Button>
     </Card>
