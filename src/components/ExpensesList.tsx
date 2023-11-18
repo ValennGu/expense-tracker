@@ -12,18 +12,16 @@ import {
   Text,
 } from '@tremor/react';
 import { Expense, ExpenseCategory } from '../models/expense';
-import { PencilAltIcon, DocumentDuplicateIcon, XIcon } from '@heroicons/react/outline';
+import { XIcon } from '@heroicons/react/outline';
 import { getBadgeColor } from '../utils/getBadgeColor';
+import { useExpenses } from '../hooks/useExpenses';
 
-interface Props {
-  expenses: Expense[];
-  onDeleteExpense: (expense: Expense) => void;
-}
+export const ExpensesList = () => {
+  const { expenses, removeExpense } = useExpenses();
 
-export const ExpensesList = (props: Props) => {
-  const onClickDelete = (expense: Expense) => props.onDeleteExpense(expense);
+  const onClickDelete = (expense: Expense) => removeExpense(expense);
 
-  const ordExpenses = [...props.expenses].sort(
+  const ordExpenses = [...expenses].sort(
     (a, b) => new Date(a.date).getDate() - new Date(b.date).getDate(),
   );
 
@@ -72,22 +70,6 @@ export const ExpensesList = (props: Props) => {
               </TableCell>
               <TableCell>
                 <Flex justifyContent="end">
-                  <Button
-                    className="mr-4"
-                    size="xs"
-                    variant="light"
-                    icon={PencilAltIcon}
-                    tooltip="Edit"
-                    disabled
-                  />
-                  <Button
-                    className="mr-4"
-                    size="xs"
-                    variant="light"
-                    icon={DocumentDuplicateIcon}
-                    tooltip="Duplicate"
-                    disabled
-                  />
                   <Button
                     size="xs"
                     variant="light"

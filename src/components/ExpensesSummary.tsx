@@ -1,47 +1,48 @@
 import { BarList, Card } from '@tremor/react';
-
 import { ExpensesCategoryAnalyticsData } from '../models/expenses-category-analytics-data';
 import { ExpenseCategory } from '../models/expense';
+import { useExpenses } from '../hooks/useExpenses';
+import { getAmountsByCategory } from '../utils/getAmountsByCategory';
 
-interface Props {
-  amountByCategory: Record<ExpenseCategory, number>;
-}
+export const ExpensesSummary = () => {
+  const { expenses } = useExpenses();
 
-export const ExpensesSummary = (props: Props) => {
+  const amountsByCategory = getAmountsByCategory(expenses);
+
   const data: ExpensesCategoryAnalyticsData[] = [
     {
       name: ExpenseCategory.Mortgage,
-      value: props.amountByCategory.Mortgage,
+      value: amountsByCategory.Mortgage,
       color: 'amber',
     },
     {
       name: ExpenseCategory.Home,
-      value: props.amountByCategory.Home,
+      value: amountsByCategory.Home,
       color: 'blue',
     },
     {
       name: ExpenseCategory.Groceries,
-      value: props.amountByCategory.Groceries,
+      value: amountsByCategory.Groceries,
       color: 'emerald',
     },
     {
       name: ExpenseCategory.Gas,
-      value: props.amountByCategory.Gas,
+      value: amountsByCategory.Gas,
       color: 'teal',
     },
     {
       name: ExpenseCategory.Gym,
-      value: props.amountByCategory.Gym,
+      value: amountsByCategory.Gym,
       color: 'fuchsia',
     },
     {
       name: ExpenseCategory.Services,
-      value: props.amountByCategory.Services,
+      value: amountsByCategory.Services,
       color: 'orange',
     },
     {
       name: ExpenseCategory.Extra,
-      value: props.amountByCategory.Extra,
+      value: amountsByCategory.Extra,
       color: 'red',
     },
   ];

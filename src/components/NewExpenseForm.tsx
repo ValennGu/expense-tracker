@@ -12,17 +12,15 @@ import {
 } from '@tremor/react';
 import { CurrencyDollarIcon } from '@heroicons/react/solid';
 import { useNewExpense } from '../hooks/useNewExpense';
-import { Expense, ExpenseCategory } from '../models/expense';
+import { ExpenseCategory } from '../models/expense';
+import { useExpenses } from '../hooks/useExpenses';
 
-interface Props {
-  onNewExpense: (expense: Expense) => void;
-}
-
-export const NewExpenseForm = (props: Props) => {
+export const NewExpenseForm = () => {
+  const { addExpense } = useExpenses();
   const { expense, changeHandler, resetValues } = useNewExpense();
 
   const onClickAddExpense = () => {
-    props.onNewExpense(expense);
+    addExpense(expense);
     resetValues();
   };
   return (
